@@ -1,0 +1,47 @@
+# CI intentionally performs static Terraform checks only.
+# It does not authenticate to Azure or run terraform apply.
+name: Terraform CI
+
+on:
+  # Validate changes merged or pushed to the primary branch.
+  push:
+    branches: ["main"]
+
+  # Catch formatting/configuration problems before pull requests merge.
+  pull_request:
+    branches: ["main"]
+
+  # Allow an on-demand CI run from the GitHub Actions interface.
+  workflow_dispatch:
+
+# Read-only repository access follows least-privilege for validation CI.
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Format and Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Pin Terraform so local and CI behavior can be reproduced.
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.13.0"
+
+      # Check Terraform formatting.
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+
+      # Download providers/modules but disable backend initialization;
+      # CI does not need access to deployment state for static validation.
+      - name: Terraform Init
+        run: terraform init -backend=false -input=false
+
+      # Validate references, argument types, and provider resource schemas.
+      - name: Terraform Validate
+        run: terraform validate -no-color
