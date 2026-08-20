@@ -1,0 +1,30 @@
+# Terraform working directory and downloaded providers/modules.
+.terraform/
+
+# Local Terraform state can contain sensitive infrastructure data.
+*.tfstate
+*.tfstate.*
+
+# Local variable files commonly contain subscription IDs or secrets.
+terraform.tfvars
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Terraform plan output may contain sensitive values.
+*.tfplan
+
+# Crash/debug artifacts are machine-specific and should not be committed.
+crash.log
+crash.*.log
+
+# Local override files should remain developer-specific.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# OS/editor noise.
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
