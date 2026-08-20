@@ -1,0 +1,30 @@
+# ============================================================
+# Variable Values
+# ============================================================
+
+subscription_id = "00000000-0000-0000-0000-000000000000"
+project_name    = "azure-lab"
+environment     = "dev"
+location        = "eastus"
+
+# VNet /16 with separate /24 subnets for workloads and management.
+address_space              = ["10.20.0.0/16"]
+compute_subnet_prefixes    = ["10.20.10.0/24"]
+management_subnet_prefixes = ["10.20.20.0/24"]
+
+# The VM has no public IP. This rule is still useful when RDP arrives
+# over a trusted private route such as VPN or VNet peering.
+allowed_rdp_cidr = "10.0.0.0/8"
+
+vm_size        = "Standard_B2s"
+admin_username = "azureadmin"
+
+# PowerShell:
+#   $env:TF_VAR_admin_password = "Use-A-Strong-Unique-Password!"
+# Bash:
+#   export TF_VAR_admin_password='Use-A-Strong-Unique-Password!'
+
+tags = {
+  owner   = "jonathan-diaz"
+  purpose = "azure-lab"
+}
